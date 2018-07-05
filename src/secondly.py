@@ -37,20 +37,33 @@ def keep_requesting():
     
     headers = get_headers()
 
-    with (open('data/log.log', 'a')) as log:
-        while True:
-            now = time.time()
-            now_str = str(round(now))
+    while True:
+        now = time.time()
+        now_str = str(round(now))
 
-            status = request_and_save(now_str, headers)
+        status = request_and_save(now_str, headers)
 
-            print('Request at {} gave {}'.format(now_str, status))
-            log.write('{},{}\n'.format(now_str, status))
+        print('Request at {} gave {}'.format(now_str, status))
+        log.write('{},{}\n'.format(now_str, status))
 
-            time_diff = time.time() - now
-            if time_diff < 20:
-                time.sleep(20 - time_diff)
+        time_diff = time.time() - now
+        if time_diff < 20:
+            time.sleep(20 - time_diff)
+
+
+def resilient_requesting(start, try_number=1):
+    try:
+        keep_requesting()
+    except Exception as e:
+        if time.time() - start > 600:
+            resilient_requesting(time.time(), try_number=1)
+        elif try_number <= 4:
+            time.sleep(2 ** try_number)
+            resilient_requesting(time.time(), try_number=try_number + 1)
+        else:
+            print('It got mad...')
+            raise e
 
 
 if __name__ == '__main__':
-    keep_requesting()
+    resilient_requesting(time.time(), try_number=1)
