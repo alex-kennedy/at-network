@@ -34,7 +34,6 @@ def request_and_save(now, headers):
 
 def keep_requesting():
     """Indefinitely make requests every 20 seconds, saving the results"""
-    
     headers = get_headers()
 
     while True:
@@ -44,7 +43,6 @@ def keep_requesting():
         status = request_and_save(now_str, headers)
 
         print('Request at {} gave {}'.format(now_str, status))
-        log.write('{},{}\n'.format(now_str, status))
 
         time_diff = time.time() - now
         if time_diff < 20:
@@ -52,6 +50,10 @@ def keep_requesting():
 
 
 def resilient_requesting(start, try_number=1):
+    """
+    If the last error was more than 10 minutes ago, just restart. 
+    Otherwise, try again with exponential back-off.
+    """
     try:
         keep_requesting()
     except Exception as e:
