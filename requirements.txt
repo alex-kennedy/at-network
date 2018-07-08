@@ -1,2 +1,5 @@
 requests
 configparser
+pandas
+tqdm
+google-cloud-storage
