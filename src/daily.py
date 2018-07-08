@@ -1,6 +1,7 @@
 import csv
 import json
 import os
+import sys
 import time
 from datetime import datetime, timedelta
 from glob import glob
@@ -196,5 +197,9 @@ def secondly_to_daily(date):
 
 
 if __name__ == '__main__':
-    date = datetime(2018, 7, 5)
+    try:
+        date = datetime(sys.argv[1], sys.argv[2], sys.argv[3])
+    except IndexError:
+        raise Exception('Not enough arguments passed! Should pass year, month and day')
+    
     secondly_to_daily(date)
