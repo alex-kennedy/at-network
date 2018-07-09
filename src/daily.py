@@ -198,7 +198,7 @@ def secondly_to_daily(date):
 
 if __name__ == '__main__':
     try:
-        date = datetime(sys.argv[1], sys.argv[2], sys.argv[3])
+        date = datetime(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
     except IndexError:
         raise Exception('Not enough arguments passed! Should pass year, month and day')
     
