@@ -54,7 +54,7 @@ def get_files_in_day(date):
         time_int = int(path.split('_')[-1][:-5])
         file_time = datetime.fromtimestamp(time_int)
 
-        if file_time > date or file_time >= date + timedelta(1):
+        if file_time > date and file_time <= date + timedelta(1):
             current_paths.append(path)
     
     return current_paths
